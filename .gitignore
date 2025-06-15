@@ -1,0 +1,61 @@
+# Build results
+bin/
+obj/
+artifacts/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider (JetBrains IDE)
+.idea/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# ASP.NET
+project.lock.json
+project.fragment.lock.json
+
+# Playwright (ako koristiš)
+.playwright/
+
+# Configuration
+appsettings.Development.json
+appsettings.Local.json
+
+# Others
+*.db
+*.bak
+*.orig
+*.swp
+*.tmp
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Windows
+ehthumbs.db
+
+# VS Code
+.vscode/
