@@ -10,7 +10,7 @@ public class BaseTest
     [SetUp]
     public async Task SetUpAsync()
     {
-        // Svaki test kreće od početne stranice
+        // Each test starts from the homepage
         await Page.GotoAsync("https://rs.shop.xyz.fashion/");
     }
 

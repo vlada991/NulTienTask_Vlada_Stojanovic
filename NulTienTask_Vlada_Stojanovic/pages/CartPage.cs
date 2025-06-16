@@ -10,7 +10,6 @@ namespace NulTienTask_Vlada_Stojanovic.pages
     public class CartPage
     {
         private readonly IPage page;
-
         private ILocator EmptyTheCartBtn => page.Locator("button[title='Isprazni korpu za kupovinu']");
         private ILocator ProceedToCheckoutBtn => page.GetByText("Nastavite na plaćanje");
         private ILocator Amount => page.Locator(".amount[data-th='Ukupno']");

@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace NulTienTask_Vlada_Stojanovic.pages
 {
-
-
     public class RegistrationPage
     {
         private readonly IPage page;
-
         private ILocator FirstNameReg => page.Locator("#firstname");
         private ILocator SecondNameReg => page.Locator("#lastname");
         private ILocator EmailAddress => page.Locator("#email_address");

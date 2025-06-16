@@ -26,15 +26,15 @@ namespace NulTienTask_Vlada_Stojanovic
             });
             Page = await Context.NewPageAsync();
 
-            //Otvori stranicu i sacekaj da se ucita
+            //Open the page and wait for it to load
             await Page.GotoAsync("https://rs.shop.xyz.fashion/");
             await Page.Locator(".dark-logo").First.WaitForAsync(new() { State = WaitForSelectorState.Visible });
 
-            //Prihvati kolacicee
+            //Accept cookies
             var homePage = new HomePage(Page);
             await homePage.AcceptCookiesMethod();
 
-            // Registracija korisnika
+            //User registration
             var registrationPage = await homePage.GoToRegistrationForm();
             string randomEmail = $"nultientest_{DateTime.Now.Ticks}@mailinator.com";
             await registrationPage.RegisterUserAsync(
@@ -44,7 +44,7 @@ namespace NulTienTask_Vlada_Stojanovic
                 "Test12345"
             );
 
-            //Verifikuj email adresu
+            //Navigate to mailinator, open e-mail and click the link from the e-mail to verify account
             await Page.GotoAsync("https://www.mailinator.com/");
             await Page.Locator("#search").FillAsync(randomEmail);
             await Page.Locator("//button[@value=\"Search for public inbox for free\"]").ClickAsync();
@@ -55,13 +55,8 @@ namespace NulTienTask_Vlada_Stojanovic
             var newPage = await popupTask;
             await newPage.WaitForLoadStateAsync();
 
-            // Odmah zatvori novi tab koji se otvara nakon sto se klikne na link iz verifikacionom mejla
+            //Immediately close the new tab that opens after clicking the link from the verification email
             await newPage.CloseAsync();
-
-            // Prihvatanje kolačića i login
-            /* await Page.GotoAsync("https://rs.shop.xyz.fashion/");
-             var loginPage = await homePage.OtvoriPrijavuAsync();
-             await loginPage.PrijaviSeAsync(randomEmail, "Test12345");*/
         }
 
         [OneTimeTearDown]

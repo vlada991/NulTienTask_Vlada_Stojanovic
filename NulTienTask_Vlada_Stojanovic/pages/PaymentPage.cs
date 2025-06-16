@@ -17,9 +17,7 @@ namespace NulTienTask_Vlada_Stojanovic.pages
         private ILocator City => page.Locator("input[name='city']");
         private ILocator PostalCode => page.Locator("input[name='postcode']");
         private ILocator PhoneNo => page.Locator("input[name='telephone']");
-
         private ILocator PaymentScreen => page.Locator(".base");
-
         public PaymentPage(IPage page) => this.page = page;
 
         public async Task EnterFirstNameAsync(string firstName)

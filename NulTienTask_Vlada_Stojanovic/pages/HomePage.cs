@@ -23,11 +23,8 @@ namespace NulTienTask_Vlada_Stojanovic.pages
         private ILocator ClothesTab => page.Locator("a[href='https://xyzfashionstore.com/rs/muskarci/odeca/']");
         private ILocator TShirts => page.Locator("(//a[@href='https://xyzfashionstore.com/rs/muskarci/odeca/majice/'])[1]/preceding::*[1]");
         private ILocator Logo => page.Locator("a[href='https://xyzfashionstore.com/rs/muskarci/odeca/majice/logo/']");
-
         private ILocator MostPopularTab => page.Locator("//a[@data-toggle='tab' and text()='Najprodavanije']/..");
-
         private ILocator BossProducts => page.Locator("img[alt='Boss']");
-
         private ILocator Magnifier => page.Locator("i[title='Pretraga']");
 
 
@@ -42,6 +39,7 @@ namespace NulTienTask_Vlada_Stojanovic.pages
         {
             await UserIcon.ClickAsync();
             await CreateUserAccount.ClickAsync();
+
             return new RegistrationPage(page);
         }
 
@@ -50,6 +48,7 @@ namespace NulTienTask_Vlada_Stojanovic.pages
             await UserIcon.ClickAsync();
             await LogIn.WaitForAsync(new() { State = WaitForSelectorState.Visible });
             await LogIn.ClickAsync();
+
             return new LoginPage(page);
         }
 
@@ -94,13 +93,11 @@ namespace NulTienTask_Vlada_Stojanovic.pages
         {
             await MensTab.ClickAsync();
             await ClothesTab.HoverAsync();
-
             await TShirts.WaitForAsync(new()
             {
                 State = WaitForSelectorState.Visible,
                 Timeout = 5000
             });
-
             await TShirts.ClickAsync();
             await Logo.ClickAsync();
 

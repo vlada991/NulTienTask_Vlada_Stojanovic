@@ -13,8 +13,6 @@ namespace NulTienTask_Vlada_Stojanovic.pages
         private ILocator EMail => page.Locator("#email");
         private ILocator Pass => page.Locator("#pass");
         private ILocator Send => page.Locator("#send2");
-
-
         public LoginPage(IPage page) => this.page = page;
 
         public async Task LogInAsync(string email, string lozinka)

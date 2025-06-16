@@ -11,13 +11,10 @@ namespace NulTienTask_Vlada_Stojanovic.pages
     {
         private readonly IPage page;
         private ILocator SelectedProduct => page.Locator("//div[contains(@class, 'product-top')]");
-
         private ILocator ResultsSearch => page.Locator(".base");
-
-
         public SearchResults(IPage page) => this.page = page;
 
-        public async Task<ProductPage> OdaberiProizvod(int index)
+        public async Task<ProductPage> SelectProduct(int index)
         {
             await SelectedProduct.Nth(index).ClickAsync();
 

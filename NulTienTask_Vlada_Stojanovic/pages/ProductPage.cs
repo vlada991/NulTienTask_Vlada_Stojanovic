@@ -14,9 +14,7 @@ namespace NulTienTask_Vlada_Stojanovic.pages
         private ILocator AddToCartBtn => page.Locator("//button[@title='Dodajte u korpu']");
         private ILocator CartIcon => page.Locator(".action.showcart");
         private ILocator GoToCart => page.Locator("a:has-text('Idite na korpu')");
-
         private ILocator SelectedProduct =>  page.Locator("#attributedescription");
-
         private ILocator ConfirmationMessage => page.Locator("//div[@data-bind='html: message.text']");
         public ProductPage(IPage page) => this.page = page;
 

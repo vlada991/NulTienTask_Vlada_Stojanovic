@@ -6,7 +6,6 @@ namespace NulTienTask_Vlada_Stojanovic.pages
     public class CategoryPage
     {
         private readonly IPage page;
-
         private ILocator Product => page.Locator("//div[contains(@class, 'product-top')]");
         private ILocator TShirtsLogo => page.Locator(".base");
 
@@ -15,9 +14,9 @@ namespace NulTienTask_Vlada_Stojanovic.pages
             this.page = page;
         }
 
-        public async Task<ProductPage> SelectProduct(int redniBroj)
+        public async Task<ProductPage> SelectProduct(int index)
         {
-            await Product.Nth(redniBroj).ClickAsync();
+            await Product.Nth(index).ClickAsync();
             return new ProductPage(page);
         }
 
