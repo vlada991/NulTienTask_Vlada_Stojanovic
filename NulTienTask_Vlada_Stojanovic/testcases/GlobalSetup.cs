@@ -12,32 +12,39 @@ namespace NulTienTask_Vlada_Stojanovic
         public static IBrowser Browser;
         public static IBrowserContext Context;
         public static IPage Page;
+        private ILocator Logo => Page.Locator(".dark-logo");
 
         [OneTimeSetUp]
         public static async Task GlobalOneTimeSetUp()
         {
             Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
             Browser = await Playwright.Chromium.LaunchAsync(new() { Headless = false });
-            Context = await Browser.NewContextAsync();
+            Context = await Browser.NewContextAsync(new BrowserNewContextOptions
+            {
+                ViewportSize = new ViewportSize { Width = 1920, Height = 1080 },
+                ScreenSize = new ScreenSize { Width = 1920, Height = 1080 }
+            });
             Page = await Context.NewPageAsync();
 
-            await Page.SetViewportSizeAsync(1920, 1080);
+            //Otvori stranicu i sacekaj da se ucita
             await Page.GotoAsync("https://rs.shop.xyz.fashion/");
+            await Page.Locator(".dark-logo").First.WaitForAsync(new() { State = WaitForSelectorState.Visible });
 
-
+            //Prihvati kolacicee
             var homePage = new HomePage(Page);
-            await homePage.PrihvatiKolaciceAsync();
+            await homePage.AcceptCookiesMethod();
 
             // Registracija korisnika
-            var registrationPage = await homePage.IdiNaFormuZaRegistraciju();
+            var registrationPage = await homePage.GoToRegistrationForm();
             string randomEmail = $"nultientest_{DateTime.Now.Ticks}@mailinator.com";
-            await registrationPage.RegistrujNovogKorisnikaAsync(
+            await registrationPage.RegisterUserAsync(
                 "Pera",
-                "Petic",
+                "Peric",
                  randomEmail,
-                "NulTienTest123"
+                "Test12345"
             );
 
+            //Verifikuj email adresu
             await Page.GotoAsync("https://www.mailinator.com/");
             await Page.Locator("#search").FillAsync(randomEmail);
             await Page.Locator("//button[@value=\"Search for public inbox for free\"]").ClickAsync();
@@ -48,9 +55,8 @@ namespace NulTienTask_Vlada_Stojanovic
             var newPage = await popupTask;
             await newPage.WaitForLoadStateAsync();
 
-            // Odmah zatvori novi tab
+            // Odmah zatvori novi tab koji se otvara nakon sto se klikne na link iz verifikacionom mejla
             await newPage.CloseAsync();
-
 
             // Prihvatanje kolačića i login
             /* await Page.GotoAsync("https://rs.shop.xyz.fashion/");

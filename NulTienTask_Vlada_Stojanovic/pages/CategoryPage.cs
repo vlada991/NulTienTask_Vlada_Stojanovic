@@ -7,15 +7,23 @@ namespace NulTienTask_Vlada_Stojanovic.pages
     {
         private readonly IPage page;
 
+        private ILocator Product => page.Locator("//div[contains(@class, 'product-top')]");
+        private ILocator TShirtsLogo => page.Locator(".base");
+
         public CategoryPage(IPage page)
         {
             this.page = page;
         }
 
-        public async Task<ProductPage> OdaberiProizvod(int redniBroj)
+        public async Task<ProductPage> SelectProduct(int redniBroj)
         {
-            await page.Locator("//div[contains(@class, 'product-top')]").Nth(redniBroj).ClickAsync();
+            await Product.Nth(redniBroj).ClickAsync();
             return new ProductPage(page);
+        }
+
+        public async Task<bool> IsCategoryLoadedAsync()
+        {
+            return await TShirtsLogo.IsVisibleAsync();
         }
     }
 }

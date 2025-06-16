@@ -19,7 +19,7 @@ public class BaseTest
     {
         await Page.GotoAsync("https://xyzfashionstore.com/rs/checkout/cart/");
         cartPage = new CartPage(Page);
-        await cartPage.IsprazniKorpuAsync();
+        await cartPage.EmptyTheCartAsync();
     }
 }
 

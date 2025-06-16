@@ -10,14 +10,23 @@ namespace NulTienTask_Vlada_Stojanovic.pages
     public class SearchResults
     {
         private readonly IPage page;
+        private ILocator SelectedProduct => page.Locator("//div[contains(@class, 'product-top')]");
+
+        private ILocator ResultsSearch => page.Locator(".base");
+
 
         public SearchResults(IPage page) => this.page = page;
 
         public async Task<ProductPage> OdaberiProizvod(int index)
         {
-            await page.Locator("//div[contains(@class, 'product-top')]").Nth(index).ClickAsync();
+            await SelectedProduct.Nth(index).ClickAsync();
 
             return new ProductPage(page);
+        }
+
+        public async Task<string> GetResultsSearchTextAsync()
+        {
+            return await ResultsSearch.InnerTextAsync();
         }
     }
 }

@@ -10,83 +10,107 @@ namespace NulTienTask_Vlada_Stojanovic.pages
     public class HomePage
     {
         private readonly IPage page;
+        private ILocator AcceptCookies => page.Locator("#cmpbntyestxt");
+        private ILocator UserIcon => page.Locator("//button[@data-toggle='dropdown']");
+        private ILocator CreateUserAccount => page.GetByRole(AriaRole.Link, new() { Name = "Kreirajte korisnički nalog" });
+        private ILocator MostPopular => page.Locator("a:has-text('Najprodavanije')");
+        private ILocator LogIn => page.GetByRole(AriaRole.Link, new() { Name = "Prijava" });
+        private ILocator ScrollToCarousel => page.Locator("(//div[contains(@class, 'owl-drag')])[3]");
+        private ILocator MostPopularProduct => page.Locator("a[title='JOOP! - Svetloplava muška košulja']").First;
+        private ILocator SearchMagnifier => page.Locator(".action-search i[title='Pretraga']");
+        private ILocator SearchTextField => page.Locator("input#search");
+        private ILocator MensTab => page.Locator("a[href='/rs/muskarci/']");
+        private ILocator ClothesTab => page.Locator("a[href='https://xyzfashionstore.com/rs/muskarci/odeca/']");
+        private ILocator TShirts => page.Locator("(//a[@href='https://xyzfashionstore.com/rs/muskarci/odeca/majice/'])[1]/preceding::*[1]");
+        private ILocator Logo => page.Locator("a[href='https://xyzfashionstore.com/rs/muskarci/odeca/majice/logo/']");
+
+        private ILocator MostPopularTab => page.Locator("//a[@data-toggle='tab' and text()='Najprodavanije']/..");
+
+        private ILocator BossProducts => page.Locator("img[alt='Boss']");
+
+        private ILocator Magnifier => page.Locator("i[title='Pretraga']");
+
 
         public HomePage(IPage page) => this.page = page;
 
-        public async Task PrihvatiKolaciceAsync()
+        public async Task AcceptCookiesMethod()
         {
-            await page.Locator("#cmpbntyestxt").ClickAsync();
+            await AcceptCookies.ClickAsync();
         }
 
-        public async Task<RegistrationPage> IdiNaFormuZaRegistraciju()
+        public async Task<RegistrationPage> GoToRegistrationForm()
         {
-            await page.Locator("//button[@data-toggle='dropdown']").ClickAsync();
-            await page.GetByRole(AriaRole.Link, new() { Name = "Kreirajte korisnički nalog" }).ClickAsync();
+            await UserIcon.ClickAsync();
+            await CreateUserAccount.ClickAsync();
             return new RegistrationPage(page);
         }
 
-        public async Task<LoginPage> OtvoriPrijavuAsync()
+        public async Task<LoginPage> OpenLoginPage()
         {
-            await page.Locator("//button[@data-toggle='dropdown']").ClickAsync();
-            var prijava = page.GetByRole(AriaRole.Link, new() { Name = "Prijava" });
-            await prijava.WaitForAsync(new() { State = WaitForSelectorState.Visible });
-            await prijava.ClickAsync();
+            await UserIcon.ClickAsync();
+            await LogIn.WaitForAsync(new() { State = WaitForSelectorState.Visible });
+            await LogIn.ClickAsync();
             return new LoginPage(page);
         }
 
-        public async Task OtvoriNajprodavanijeAsync()
+        public async Task OpenMostPopularAsync()
         {
-            await page.Locator("a:has-text('Najprodavanije')").ClickAsync();
+            await MostPopular.ClickAsync();
         }
 
-        public async Task SkrolujDoCarouselaAsync()
+        public async Task ScrollToCarouselAsync()
         {
-            var strelica = page.Locator("(//div[contains(@class, 'owl-drag')])[3]");
-            await strelica.ScrollIntoViewIfNeededAsync();
+            await ScrollToCarousel.ScrollIntoViewIfNeededAsync();
             await page.EvaluateAsync("window.scrollBy(0, 190)");
         }
 
-        public async Task<ProductPage> KlikniNaProizvodAsync()
+        public async Task<ProductPage> ClickOnProductAsync()
         {
-            var proizvod = page.Locator("a[title='JOOP! - Svetloplava muška košulja']").First;
-            await proizvod.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 20000 });
-            await proizvod.ClickAsync();
+            await MostPopularProduct.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 20000 });
+            await MostPopularProduct.ClickAsync();
 
             return new ProductPage(page);
         }
 
-        public async Task OtvoriPretraguAsync()
+        public async Task OpenSearchAsync()
         {
-            await page.Locator(".action-search i[title='Pretraga']").ClickAsync();
-            await Task.Delay(2000); // možeš zameniti boljim čekanjem ako želiš
+            await SearchMagnifier.ClickAsync();
         }
 
 
-        public async Task<SearchResults> PretraziProizvodAsync(string naziv)
+        public async Task<SearchResults> SearchProductAsync()
         {
-            await page.Locator("input#search").FillAsync(naziv);
-            await page.Keyboard.PressAsync("Enter");
-            await Task.Delay(3000);
+            await SearchTextField.WaitForAsync(new()
+            {
+                State = WaitForSelectorState.Visible,
+                Timeout = 5000
+            });
+            await BossProducts.ClickAsync();
 
             return new SearchResults(page);
         }
 
-        public async Task<CategoryPage> NavigirajDoLogoMajicaAsync()
+        public async Task<CategoryPage> NavigateToLogoTShirtAsync()
         {
-            await page.Locator("a[href='/rs/muskarci/']").ClickAsync();
-            await page.Locator("a[href='https://xyzfashionstore.com/rs/muskarci/odeca/']").HoverAsync();
-            var majice = page.Locator("(//a[@href='https://xyzfashionstore.com/rs/muskarci/odeca/majice/'])[1]/preceding::*[1]");
+            await MensTab.ClickAsync();
+            await ClothesTab.HoverAsync();
 
-            await majice.WaitForAsync(new()
+            await TShirts.WaitForAsync(new()
             {
                 State = WaitForSelectorState.Visible,
                 Timeout = 5000
             });
 
-            await majice.ClickAsync();
-            await page.Locator("a[href='https://xyzfashionstore.com/rs/muskarci/odeca/majice/logo/']").ClickAsync();
+            await TShirts.ClickAsync();
+            await Logo.ClickAsync();
 
             return new CategoryPage(page);
+        }
+
+        public async Task<bool> IsMostPopularTabActiveAsync()
+        {
+            var classAttribute = await MostPopularTab.GetAttributeAsync("class");
+            return classAttribute != null && classAttribute.Split(' ').Contains("active");
         }
 
     }
